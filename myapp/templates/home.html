@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block home %}
+<div class="container"> <!-- The form is in container that constrain his width (md-9), inside the form we have rows, each row have 2 columns-->
+    <div class="row">
+        <br>
+        <h5 style="margin-left: 16px">How it works: You fill the document details, click "Create Document", the desired Word document will be created using AI and will be downloaded to your device.</h5>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <form class="p-3shadow" style="border-style:solid; padding:10px; border-color:black; border-radius:10px" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <br>
+                <div class="row">
+                    <div class="col">
+                         <div class="form-group">
+                            <strong style="color:red";>*</strong><label><b>Document subject:</b></label>
+                            <input type="text" class="form-control" name="document_subject" id="document_subject" PLACEHOLDER="Example: An article on the space race between USA and USSR, writen in academic style" required value={{ document_subject }}>
+                            <button type="button" class="btn btn-primary" id="voice_input_button">Speak</button>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                         <div class="form-group">
+                            <label for="document_title"><b>Title:</b></label>
+                            <input type="text" class="form-control" name="document_title" id="document_title" PLACEHOLDER="Example: The space race" value={{ document_title }}>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label><b>Font:</b></label>
+                            <select name="font" id="font">
+                                <option style="font-family: Arial;" value="Arial" selected>Ariel</option>
+                                <option style="font-family: Times New Roman;" value="Times_New_Roman">Times New Roman</option>
+                                <option style="font-family: Verdana;" value="Verdana">Verdana</option>
+                                <option style="font-family: Rockwell;" value="Rockwell">Rockwell</option>
+                                <option style="font-family: Franklin Gothic;" value="Franklin_Gothic">Franklin Gothic</option>
+                                <option style="font-family: Futura;" value="Futura">Futura</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                       <div class="form-group">
+                           <label><b>Length:</b></label>
+                           <label for="length_not_specified">Not specified</label>
+                           <input type="radio" id="length_not_specified" name="length_option" value="length_not_specified" checked onclick="disableLengthInput()">
+                           <label for="length_words">Words</label>
+                           <input type="radio" id="length_words" name="length_option" value="length_words" onclick="enableLengthInput()">
+                           <label for="length_paragraphs">Paragraphs</label>
+                           <input type="radio" id="length_paragraphs" name="length_option" value="length_paragraphs" onclick="enableLengthInput()">
+                           <input type="number" id="length_number" name="length_number" min="1" step="1" disabled="true" required></input>
+                        </div>
+
+                        <script>
+                            function disableLengthInput() {
+                                document.getElementById("length_number").disabled = true;
+                            }
+
+                            function enableLengthInput() {
+                                document.getElementById("length_number").disabled = false;
+                            }
+
+                            //code that record the user, convert the audio to text and put the text in the input text field.
+
+                            // Create a new instance of the webkitSpeechRecognition object
+                            const recognition = new window.webkitSpeechRecognition();
+
+                            // Set the language for the recognition service
+                            recognition.lang = 'en-US';
+
+                            // Add an event listener to the recognition service to handle speech recognition events
+                            recognition.addEventListener('result', (event) => {
+                                // Get the text that was spoken by the user
+                                const spokenText = event.results[0][0].transcript;
+
+                                // Update the value of the input field with the spoken text
+                                const inputField = document.querySelector('#document_subject');
+                                inputField.value = spokenText;
+                            });
+
+                            // Get a reference to the voice input button and add an event listener to start the recognition service
+                            const voiceInputButton = document.querySelector('#voice_input_button');
+                            voiceInputButton.addEventListener('click', () => {
+                                recognition.start();
+                            });
+
+                        </script>
+
+                    </div>
+                </div>
+
+                <input class="btn btn-dark" type="submit" value="Create Document">
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
