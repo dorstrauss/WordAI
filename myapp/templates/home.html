@@ -52,7 +52,7 @@
                            <input type="radio" id="length_words" name="length_option" value="length_words" onclick="enableLengthInput()">
                            <label for="length_paragraphs">Paragraphs</label>
                            <input type="radio" id="length_paragraphs" name="length_option" value="length_paragraphs" onclick="enableLengthInput()">
-                           <input type="number" id="length_number" name="length_number" min="1" step="1" disabled="true" required></input>
+                           <input type="number" id="length_number" name="length_number" min="1" max="500" step="1" disabled="true" required></input>
                         </div>
 
                         <script>
@@ -85,7 +85,9 @@
                             // Get a reference to the voice input button and add an event listener to start the recognition service
                             const voiceInputButton = document.querySelector('#voice_input_button');
                             voiceInputButton.addEventListener('click', () => {
-                                recognition.start();
+                                if (confirm("You chose to set the document subject via voice.\nIn order to do so you need to give access to your microphone.\nOnce you give access to the microphone the recording will start, please say the document subject clearly, once you stop speaking the recording will stop and the text will be set in the form.\n Do you want to continue?")) {
+                                    recognition.start();
+                                }
                             });
 
                         </script>
@@ -100,5 +102,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

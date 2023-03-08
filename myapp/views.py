@@ -41,11 +41,13 @@ def home(request):
         if document_text == "\n\nNone" or document_text == "\n\nSorry, I do not understand what you are asking. Could you please rephrase your question?":
             render(request, 'home.html', {"invalid_query": True})
 
+        document_name = "new document"
 
         # creating a new Word document from the gpt document
         doc = docx.Document()
         if document_title != "":  # if the user set a title, we create it in the new Word document
             doc.add_heading(document_title, 0)
+            document_name = document_title
         paragraph = doc.add_paragraph(document_text)  # adding the gpt text to the document
         document_font = paragraph.style.font
         document_font.name = font
@@ -56,7 +58,7 @@ def home(request):
         buffer.seek(0)
 
         # Create a FileResponse object with the document content
-        response = FileResponse(buffer, filename='my_document.docx')
+        response = FileResponse(buffer, filename=document_name + '.docx')
         return response
 
 
