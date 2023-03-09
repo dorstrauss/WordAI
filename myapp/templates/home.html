@@ -85,7 +85,7 @@
                             // Get a reference to the voice input button and add an event listener to start the recognition service
                             const voiceInputButton = document.querySelector('#voice_input_button');
                             voiceInputButton.addEventListener('click', () => {
-                                if (confirm("You chose to set the document subject via voice.\nIn order to do so you need to give access to your microphone.\nOnce you give access to the microphone the recording will start, please say the document subject clearly, once you stop speaking the recording will stop and the text will be set in the form.\n Do you want to continue?")) {
+                                if (confirm("You chose to set the document subject via voice.\nIn order to do so you need to give access to your microphone.\nOnce you give access to the microphone the recording will start, please say the document subject clearly in english, once you stop speaking the recording will stop and the text will be set in the form.\n Do you want to continue?")) {
                                     recognition.start();
                                 }
                             });
